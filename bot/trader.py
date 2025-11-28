@@ -5,7 +5,7 @@ from .risk_manager import RiskManager
 import config
 
 class Trader:
-    def __init__(self, testnet=False):
+    def __init__(self, testnet=False, max_daily_trades=None):
         self.exchange = ccxt.binance({
             'apiKey': config.BINANCE_API_KEY,
             'secret': config.BINANCE_SECRET_KEY,
@@ -17,7 +17,8 @@ class Trader:
             print("Running in Testnet (Sandbox) mode") 
         
         self.strategy = Strategy()
-        self.risk_manager = RiskManager(config.MAX_DAILY_TRADES, config.STOP_LOSS_PCT)
+        limit = max_daily_trades if max_daily_trades is not None else config.MAX_DAILY_TRADES
+        self.risk_manager = RiskManager(limit, config.STOP_LOSS_PCT)
 
     def fetch_data(self, symbol, timeframe, limit=100):
         bars = self.exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit)
