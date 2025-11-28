@@ -5,14 +5,16 @@ from .risk_manager import RiskManager
 import config
 
 class Trader:
-    def __init__(self):
+    def __init__(self, testnet=False):
         self.exchange = ccxt.binance({
             'apiKey': config.BINANCE_API_KEY,
             'secret': config.BINANCE_SECRET_KEY,
             'enableRateLimit': True,
         })
-        # Use sandbox for testing if needed, but for now assuming live or testnet keys provided
-        # self.exchange.set_sandbox_mode(True) 
+        
+        if testnet:
+            self.exchange.set_sandbox_mode(True) 
+            print("Running in Testnet (Sandbox) mode") 
         
         self.strategy = Strategy()
         self.risk_manager = RiskManager(config.MAX_DAILY_TRADES, config.STOP_LOSS_PCT)

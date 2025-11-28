@@ -7,10 +7,11 @@ import config
 def main():
     parser = argparse.ArgumentParser(description="Binance Trading Bot 'binonrown'")
     parser.add_argument('--mode', choices=['live', 'backtest'], default='live', help='Mode to run the bot in')
+    parser.add_argument('--testnet', action='store_true', help='Use Binance Testnet')
     args = parser.parse_args()
 
     if args.mode == 'live':
-        trader = Trader()
+        trader = Trader(testnet=args.testnet)
         trader.run()
     
     elif args.mode == 'backtest':
