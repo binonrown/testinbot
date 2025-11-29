@@ -8,7 +8,7 @@ BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
 # Trading Configuration
 SYMBOL = "BTC/USDT"
-TIMEFRAME = "1h"
+TIMEFRAME = "15m"
 MAX_DAILY_TRADES = 10
 STOP_LOSS_PCT = 0.02  # 2% stop loss
 TAKE_PROFIT_PCT = 0.04 # 4% take profit
