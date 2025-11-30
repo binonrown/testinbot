@@ -14,29 +14,27 @@ class Strategy:
         return rsi
 
     def generate_signal(self, df):
-        # Strategy: SMA Crossover + RSI Filter
-        # Buy: SMA 20 > SMA 50 AND RSI < 70 (Not overbought)
-        # Sell: SMA 20 < SMA 50
+        # Strategy: Dip Buying (RSI + Green Candle)
+        # Buy: RSI < 30 (Oversold/Low) AND Current Candle is Green (Close > Open)
+        # Sell: RSI > 70 (Overbought/High)
         
-        df['SMA_20'] = df['close'].rolling(window=20).mean()
-        df['SMA_50'] = df['close'].rolling(window=50).mean()
         df['RSI'] = self.calculate_rsi(df['close'])
         
         last_row = df.iloc[-1]
-        prev_row = df.iloc[-2]
         
         # Ensure we have enough data
-        if pd.isna(last_row['SMA_50']) or pd.isna(prev_row['SMA_50']) or pd.isna(last_row['RSI']):
+        if pd.isna(last_row['RSI']):
             return None
         
+        # Define Green Candle
+        is_green_candle = last_row['close'] > last_row['open']
+        
         # Buy Signal
-        if (prev_row['SMA_20'] <= prev_row['SMA_50'] and 
-            last_row['SMA_20'] > last_row['SMA_50'] and 
-            last_row['RSI'] < 70):
+        if last_row['RSI'] < 30 and is_green_candle:
             return 'buy'
             
         # Sell Signal
-        elif prev_row['SMA_20'] >= prev_row['SMA_50'] and last_row['SMA_20'] < last_row['SMA_50']:
+        elif last_row['RSI'] > 70:
             return 'sell'
         
         return None

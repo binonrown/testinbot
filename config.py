@@ -8,10 +8,10 @@ BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
 # Trading Configuration
 SYMBOL = "BTC/USDT"
-TIMEFRAME = "15m"
+TIMEFRAME = "1h"
 MAX_DAILY_TRADES = 10
 STOP_LOSS_PCT = 0.02  # 2% stop loss
 TAKE_PROFIT_PCT = 0.04 # 4% take profit
 
 # Backtesting Configuration
-INITIAL_BALANCE = 1000
+INITIAL_BALANCE = 200

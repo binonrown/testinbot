@@ -34,7 +34,11 @@ def main():
             print(f"Running for {args.duration} with unlimited trades={args.unlimited_trades}...")
             
             while time.time() < end_time:
-                trader.run()
+                try:
+                    trader.run()
+                except Exception as e:
+                    print(f"Error occurred: {e}")
+                    print("Retrying in 1 minute...")
                 time.sleep(60) # Wait 1 minute between checks
         else:
             trader.run()

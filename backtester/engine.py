@@ -53,6 +53,21 @@ class Backtester:
                     })
                     print(f"Sell at {exit_price} on {timestamp}. PnL: {pnl:.2%}. Balance: {self.balance:.2f}")
                     
+                # Check Take Profit
+                elif current_price >= entry_price * (1 + config.TAKE_PROFIT_PCT):
+                     position = None
+                     exit_price = current_price
+                     pnl = (exit_price - entry_price) / entry_price
+                     self.balance *= (1 + pnl)
+                     self.trades.append({
+                        'type': 'take_profit',
+                        'price': exit_price,
+                        'time': timestamp,
+                        'balance': self.balance,
+                        'pnl': pnl
+                    })
+                     print(f"Take Profit triggered at {exit_price} on {timestamp}. PnL: {pnl:.2%}. Balance: {self.balance:.2f}")
+
                 # Check Stop Loss
                 elif current_price <= entry_price * (1 - config.STOP_LOSS_PCT):
                      position = None
